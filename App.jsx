@@ -1,12 +1,4 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
-import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -25,11 +17,30 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+import{Platform} from 'react-native';
+import{ZohoSalesIQ} from 'react-native-zohosalesiq-mobilisten';
+var appKey;
+var accessKey;
+if (Platform.OS === 'ios') {
+    appKey = "ios_appKey";
+    accessKey = "ios_accessKey";
+} else {
+    appKey = "";
+    accessKey = "";
+}
 
-function Section({children, title}: SectionProps): React.JSX.Element {
+ZohoSalesIQ.initWithCallback(appKey, accessKey, (success) => {
+  if (success) {
+      ZohoSalesIQ.Launcher.show(ZohoSalesIQ.Launcher.VisibilityMode.ALWAYS);
+      // To show the default live chat launcher, you can use the
+      // setLauncherVisibility API. Alternatively, you may use the 'Avail
+      // floating chat button for your app' option under Settings → Brands →
+      // Installation → Android/iOS.
+  } 
+});
+
+
+function Section({ children, title }) {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>
@@ -39,7 +50,8 @@ function Section({children, title}: SectionProps): React.JSX.Element {
           {
             color: isDarkMode ? Colors.white : Colors.black,
           },
-        ]}>
+        ]}
+      >
         {title}
       </Text>
       <Text
@@ -48,14 +60,15 @@ function Section({children, title}: SectionProps): React.JSX.Element {
           {
             color: isDarkMode ? Colors.light : Colors.dark,
           },
-        ]}>
+        ]}
+      >
         {children}
       </Text>
     </View>
   );
 }
 
-function App(): React.JSX.Element {
+function App() {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -70,14 +83,16 @@ function App(): React.JSX.Element {
       />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
+        style={backgroundStyle}
+      >
         <Header />
         <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
+          }}
+        >
           <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
+            Edit <Text style={styles.highlight}>App.jsx</Text> to change this
             screen and then come back to see your edits.
           </Section>
           <Section title="See Your Changes">
@@ -116,3 +131,10 @@ const styles = StyleSheet.create({
 });
 
 export default App;
+
+
+
+
+
+
+
